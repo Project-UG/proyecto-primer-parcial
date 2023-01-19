@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import Swal from 'sweetalert2';
+import { switchAll } from 'rxjs/operators';
 
 declare const gapi:any;
 
@@ -17,9 +18,8 @@ export class LoginComponent implements OnInit {
   public auth2: any;
 
   public loginForm = this.fb.group({
-    email: [ localStorage.getItem('email') || '' , [ Validators.required, Validators.email ] ],
-    password: ['', Validators.required ],
-    remember: [false]
+    username: ['' , Validators.required ],
+    password: ['', Validators.required ]
   });
 
 
@@ -29,70 +29,33 @@ export class LoginComponent implements OnInit {
                private ngZone: NgZone ) { }
 
   ngOnInit(): void {
-    this.renderButton();
   }
 
 
   login() {
-
-    this.usuarioService.login( this.loginForm.value )
-      .subscribe( resp => {
-
-        if ( this.loginForm.get('remember').value ){ 
-          localStorage.setItem('email', this.loginForm.get('email').value );
-        } else {
-          localStorage.removeItem('email');
-        }
-
-        // Navegar al Dashboard
-        this.router.navigateByUrl('/');
-
-      }, (err) => {
-        // Si sucede un error
-        Swal.fire('Error', err.error.msg, 'error' );
-      });
+    this.usuarioService.validarUsuario(this.loginForm.value)
+              .subscribe((resp:any)=>{
+                if(resp.estado == 'ok'){
+                  localStorage.setItem('usuario',JSON.stringify(resp.usuario));
+                  this.usuarioService.usuario = resp.usuario;
+                  this.router.navigateByUrl('/dashboard');
+                }else{
+                  Swal.fire({
+                    title:'Advertencia',
+                    text:resp.mensaje,
+                    icon:'warning'
+                  })
+                }
+              },
+              err=>{
+                Swal.fire({
+                  title:'Error',
+                  text:'Ha ocurrido un error en el servidor',
+                  icon:'error'
+                })
+              })
 
   }
   
-  renderButton() {
-    gapi.signin2.render('my-signin2', {
-      'scope': 'profile email',
-      'width': 240,
-      'height': 50,
-      'longtitle': true,
-      'theme': 'dark',
-    });
-
-    this.startApp();
-
-  }
-
-  async startApp() {
-    
-    await this.usuarioService.googleInit();
-    this.auth2 = this.usuarioService.auth2;
-
-    this.attachSignin( document.getElementById('my-signin2') );
-    
-  };
-
-  attachSignin(element) {
-    
-    this.auth2.attachClickHandler( element, {},
-        (googleUser) => {
-            const id_token = googleUser.getAuthResponse().id_token;
-            // console.log(id_token);
-            this.usuarioService.loginGoogle( id_token )
-              .subscribe( resp => {
-                // Navegar al Dashboard
-                this.ngZone.run( () => {
-                  this.router.navigateByUrl('/');
-                })
-              });
-
-        }, (error) => {
-            alert(JSON.stringify(error, undefined, 2));
-        });
-  }
 
 }

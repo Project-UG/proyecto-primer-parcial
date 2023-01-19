@@ -4,6 +4,8 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2'
 
 import { UsuarioService } from '../../services/usuario.service';
+import { Usuario } from 'src/app/interfaces/usuario.interface';
+import { switchAll } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -15,10 +17,10 @@ export class RegisterComponent {
   public formSubmitted = false;
 
   public registerForm = this.fb.group({
-    nombre: ['Fernando', Validators.required ],
-    email: ['test100@gmail.com', [ Validators.required, Validators.email ] ],
-    password: ['123456', Validators.required ],
-    password2: ['123456', Validators.required ],
+    username: ['', Validators.required ],
+    correo: ['', [ Validators.required, Validators.email ] ],
+    password: ['', Validators.required ],
+    password2: ['', Validators.required ],
     terminos: [ true, Validators.required ],
   }, {
     validators: this.passwordsIguales('password', 'password2')
@@ -36,11 +38,23 @@ export class RegisterComponent {
       return;
     }
 
-    // Realizar el posteo
-    this.usuarioService.crearUsuario( this.registerForm.value )
-        .subscribe( resp => {
+    let { username , password , correo } = this.registerForm.value;
+
+    let usuario:Usuario = {
+        username,
+        password,
+        correo
+    }
+
+    this.usuarioService.crearUsuario( usuario )
+        .subscribe( (resp:any) => {
           
-          // Navegar al Dashboard
+          Swal.fire({
+            title:(resp.estado == 'ok')? 'Éxito':'Advertencia',
+            text:resp.mensaje,
+            icon:(resp.estado == 'ok')?'success':'warning'
+          })
+          
           this.router.navigateByUrl('/');
 
         }, (err) => {

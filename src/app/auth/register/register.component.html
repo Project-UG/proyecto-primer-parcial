@@ -12,13 +12,13 @@
                     (ngSubmit)="crearUsuario()">
 
                 <a href="javascript:void(0)" class="text-center db"><img src="../assets/images/logo-icon.png" alt="Home" /><br/><img src="../assets/images/logo-text.png" alt="Home" /></a>
-                <h3 class="box-title m-t-40 m-b-0">Register Now</h3><small>Create your account and enjoy</small>
+                <h3 class="box-title m-t-40 m-b-0">Registro</h3>
                 <div class="form-group m-t-20">
                     <div class="col-xs-12">
                         <input class="form-control"
                                 type="text"
-                                placeholder="Name"
-                                formControlName="nombre">
+                                placeholder="Nombre de usuario"
+                                formControlName="username">
                     </div>
                 </div>
                 <div class="form-group ">
@@ -26,7 +26,7 @@
                         <input class="form-control" 
                                 type="text" 
                                 placeholder="Email"
-                                formControlName="email">
+                                formControlName="correo">
                     </div>
                 </div>
                 <div class="form-group ">
@@ -41,7 +41,7 @@
                     <div class="col-xs-12">
                         <input class="form-control" 
                                 type="password" 
-                                placeholder="Confirm Password"
+                                placeholder="Confirma la contraseña"
                                 formControlName="password2">
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                                     type="checkbox"
                                     formControlName="terminos">
 
-                            <label for="checkbox-signup"> I agree to all <a href="#">Terms</a></label>
+                            <label for="checkbox-signup"> Acepto los términos y condiciones <a href="#">Términos</a></label>
                         </div>
                     </div>
                 </div>
@@ -62,8 +62,8 @@
                 <div class="row">
                     <div class="col text-danger">
 
-                        <p *ngIf="campoNoValido('nombre')">* El nombre es obligatorio</p>
-                        <p *ngIf="campoNoValido('email')">* El email es obligatorio y tiene que ser válido</p>
+                        <p *ngIf="campoNoValido('username')">* El nombre de usuario es obligatorio</p>
+                        <p *ngIf="campoNoValido('correo')">* El email es obligatorio y tiene que ser válido</p>
                         <p *ngIf="contrasenasNoValidas()">* Las contraseñas deben de ser iguales</p>
                         <p *ngIf="aceptaTerminos()">* Debe de aceptar los términos de uso</p>
 

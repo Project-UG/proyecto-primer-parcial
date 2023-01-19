@@ -8,9 +8,7 @@ import { AuthModule } from './auth/auth.module';
 
 import { AppComponent } from './app.component';
 import { NopagefoundComponent } from './nopagefound/nopagefound.component';
-
-
-
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -22,7 +20,8 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
     BrowserModule,
     AppRoutingModule,
     PagesModule,
-    AuthModule
+    AuthModule,
+    CommonModule
   ],
   bootstrap: [AppComponent]
 })

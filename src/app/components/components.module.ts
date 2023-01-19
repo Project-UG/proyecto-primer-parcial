@@ -1,30 +1,37 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { ChartsModule } from 'ng2-charts';
 
-import { IncrementadorComponent } from './incrementador/incrementador.component';
 import { DonaComponent } from './dona/dona.component';
-import { ModalImagenComponent } from './modal-imagen/modal-imagen.component';
+import { ModalClienteComponent } from './modal-cliente/modal-cliente.component';
+import { ModalVideoComponent } from './modal-video/modal-video.component';
+import { ModalUsuarioComponent } from './modal-usuario/modal-usuario.component';
+import { ModalDetalleVentaComponent } from './modal-detalle-venta/modal-detalle-venta.component';
 
 
 
 @NgModule({
   declarations: [
-    IncrementadorComponent,
     DonaComponent,
-    ModalImagenComponent
+    ModalClienteComponent,
+    ModalVideoComponent,
+    ModalUsuarioComponent,
+    ModalDetalleVentaComponent
   ],
   exports: [
-    IncrementadorComponent,
     DonaComponent,
-    ModalImagenComponent
+    ModalClienteComponent,
+    ModalVideoComponent,
+    ModalUsuarioComponent,
+    ModalDetalleVentaComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    ChartsModule
+    ChartsModule,
+    ReactiveFormsModule
   ]
 })
 export class ComponentsModule { }
